@@ -1,0 +1,45 @@
+import os
+
+DEBUG = True
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+SITE_DOMAIN = 'yup.mebuka.net'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_name',
+        'USER': 'db_user',
+        'PASSWORD': 'db_pass',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+
+# Mongo
+MONGO_SERVER_URL = 'mongodb://{}:{}/'.format('127.0.0.1', '27017')
+MONGO_DB_NAME = 'mongo_name'
+
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+
+STATIC_DOMAIN = 'http://%s' % SITE_DOMAIN
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+MEDIA_DOMAIN = 'http://%s' % SITE_DOMAIN
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
