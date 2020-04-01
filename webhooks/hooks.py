@@ -1,21 +1,22 @@
-import json
 import requests
 from os import path
 from pprint import pprint
+from rest_framework.views import APIView
 from django.http.response import HttpResponse
-from django.utils.decorators import method_decorator
-from django.views import generic
-from django.views.decorators.csrf import csrf_exempt
 
-PAGE_ACCESS_TOKEN = ""
-VERIFY_TOKEN = "2318934571"
+PAGE_ACCESS_TOKEN = "EAAMQEEFDTO8BAM5AtVG80pR6XuwGFYoYnXZAjg1iUTkZBNLZB0mMD6ETTU8pdKrJvelAXetqCHMTI92welTZC8CT4SehFDHJ0uxyaBgquvbZBtrFF8SjS1AGjyKO7ZBck8SSHkIWYNDGUQObOuh16aV1tOe1ZB1a4x8YcwqdHCeLGE1VTRWYHOejwqaQhiPC9EZD"
+VERIFY_TOKEN = "24031996"
 
 
 def call_send_api(fbid, page_id, message_data):
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' % PAGE_ACCESS_TOKEN
-    response_msg = json.dumps({"recipient": {"id": fbid}, "message": message_data})
-    status = requests.post(post_message_url, headers={"Content-Type": "application/json"}, data=response_msg)
-    pprint(status.json())
+    response_msg = {
+        "recipient": {
+            "id": fbid
+        },
+        **message_data
+    }
+    requests.post(post_message_url, json=response_msg)
 
 
 def call_delete_api(page_id, message_data):
@@ -37,32 +38,93 @@ def send_typing_on(fbid, page_id):
     call_send_api(fbid, page_id, message_content)
 
 
-def send_quick_reply(fbid, page_id, text, quick_replies):
+def send_typing_off(fbid, page_id):
     message_content = {
-        'text': text,
-        'quick_replies': quick_replies
+        'sender_action': 'typing_off'
     }
     call_send_api(fbid, page_id, message_content)
 
 
-def send_generic_message(fbid, page_id, elements):
+def send_quick_reply(fbid, page_id, text, quick_replies):
     message_content = {
-        'type': 'template',
-        'payload': {
-            'template_type': 'generic',
-            'elements': elements
+        'message': {
+            'text': text,
+            'quick_replies': quick_replies
         }
     }
     call_send_api(fbid, page_id, message_content)
 
 
-def send_button_message(fbid, page_id, buttons):
+# elements = [{
+#     'title': "rift",
+#     'subtitle': "Next-generation virtual reality",
+#     'item_url': "https://www.oculus.com/en-us/rift/",
+#     'image_url': 'https://images.unsplash.com/photo-1533907650686-70576141c030?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
+#     'buttons': [{
+#         'type': "web_url",
+#         'url': "https://www.oculus.com/en-us/rift/",
+#         'title': "Open Web URL"
+#     }, {
+#         'type': "postback",
+#         'title': "Call Postback",
+#         'payload': "Payload for first bubble",
+#     }],
+# }, {
+#     'title': "touch",
+#     'subtitle': "Your Hands, Now in VR",
+#     'item_url': "https://www.oculus.com/en-us/touch/",
+#     'image_url': 'https://images.unsplash.com/photo-1533907650686-70576141c030?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
+#     'buttons': [{
+#         'type': "web_url",
+#         'url': "https://www.oculus.com/en-us/touch/",
+#         'title': "Open Web URL"
+#     }, {
+#         'type': "postback",
+#         'title': "Call Postback",
+#         'payload': "Payload for second bubble",
+#     }]
+# }]
+# send_generic_message(sender_id, page_id, elements)
+def send_generic_message(fbid, page_id, elements):
     message_content = {
-        'type': 'template',
-        'payload': {
-            'template_type': 'button',
-            'text': 'this is the test text',
-            'buttons': buttons
+        'message': {
+            'attachment': {
+                'type': 'template',
+                'payload': {
+                    'template_type': 'generic',
+                    'elements': elements
+                }
+            }
+        }
+    }
+    call_send_api(fbid, page_id, message_content)
+
+
+# buttons = [{
+#     'type': "web_url",
+#     'url': "https://www.oculus.com/en-us/rift/",
+#     'title': "Open Web URL"
+# }, {
+#     'type': "postback",
+#     'title': "Trigger Postback",
+#     'payload': "DEVELOPER_DEFINED_PAYLOAD"
+# }, {
+#     'type': "phone_number",
+#     'title': "Call Phone Number",
+#     'payload': "+16505551234"
+# }]
+# send_button_message(sender_id, page_id, buttons=buttons, text_message='new test message')
+def send_button_message(fbid, page_id, buttons, text_message):
+    message_content = {
+        'message': {
+            'attachment': {
+                'type': 'template',
+                'payload': {
+                    'template_type': 'button',
+                    'text': text_message,
+                    'buttons': buttons
+                }
+            }
         }
     }
     call_send_api(fbid, page_id, message_content)
@@ -70,8 +132,10 @@ def send_button_message(fbid, page_id, buttons):
 
 def send_text_message(fbid, page_id, text_message):
     message_data = {
-        "text": text_message,
-        "metadata": "DEVELOPER_DEFINED_METADATA"
+        'message': {
+            "text": text_message,
+            "metadata": "DEVELOPER_DEFINED_METADATA"
+        }
     }
     call_send_api(fbid, page_id, message_data)
 
@@ -79,10 +143,12 @@ def send_text_message(fbid, page_id, text_message):
 def send_static_file(fbid, page_id, file_type, file_path):
     server_url = '/static/files'
     message_content = {
-        "attachment": {
-            "type": file_type,
-            "payload": {
-                "url": path.join(server_url, file_path)
+        'message': {
+            'attachment': {
+                "type": file_type,
+                "payload": {
+                    "url": path.join(server_url, file_path)
+                }
             }
         }
     }
@@ -90,23 +156,37 @@ def send_static_file(fbid, page_id, file_type, file_path):
 
 
 def receive_message(sender_id, page_id, message):
-    is_echo = message["is_echo"]
-    message_id = message["mid"]
-    app_id = message["app_id"]
-    metadata = message["metadata"]
+    is_echo = message.get('is_echo')
+    message_id = message.get('mid')
+    app_id = message.get('app_id')
+    metadata = message.get('metadata')
 
-    message_text = message["text"]
-    message_attachments = message["attachments"]
-    quick_reply = message["quick_reply"]
+    message_text = message.get('text')
+    message_attachments = message.get('attachments')
+    quick_reply = message.get('quick_reply')
     if is_echo:
         print('Received echo for message %s and app $d with metadata $s', message_id, app_id, metadata)
         return
     elif quick_reply:
-        quick_reply_payload = quick_reply["payload"]
+        quick_reply_payload = quick_reply.get('payload')
         send_text_message(sender_id, page_id, 'Quick reply tapped!')
         return
     elif message_text:
-        # TODO handle message text
+        # TODO
+        quick_replies = [{
+            "content_type": "text",
+            "title": "Action",
+            "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
+        }, {
+            "content_type": "text",
+            "title": "Comedy",
+            "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
+        }, {
+            "content_type": "text",
+            "title": "Drama",
+            "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
+        }]
+        send_quick_reply(sender_id, page_id, 'This is test message!', quick_replies)
         return
     elif message_attachments:
         send_text_message(sender_id, page_id, 'Message with attachment received!')
@@ -119,29 +199,28 @@ def receive_postback(sender_id, page_id, postback):
     send_text_message(sender_id, page_id, "Postback called")
 
 
-class CovidBotView(generic.View):
-    def get(self, request, *args, **kwargs):
-        if self.request.GET['hub.verify_token'] == VERIFY_TOKEN:
-            return HttpResponse(self.request.GET['hub.challenge'])
-        else:
-            return HttpResponse('Error, invalid token')
+class CovidBotView(APIView):
+    def get(self, request, format=None):
+        mode = self.request.GET['hub.mode']
+        token = self.request.GET['hub.verify_token']
+        challenge = self.request.GET['hub.challenge']
+        if mode and token:
+            if token == VERIFY_TOKEN and mode == 'subscribe':
+                return HttpResponse(challenge)
+        return HttpResponse('Error, invalid token')
 
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return generic.View.dispatch(self, request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        incoming_message = json.loads(self.request.body.decode('utf-8'))
-        for entry in incoming_message['entry']:
-            messaging_event = entry["messaging"][0]
-            sender_id = messaging_event['sender']['id']
-            page_id = messaging_event['recipient']['id']
-            message = messaging_event["message"]
-            postback = messaging_event['postback']
-            send_typing_on(sender_id, page_id)
-            if message:
-                return receive_message(sender_id, page_id, message)
-            elif postback:
-                return receive_postback(sender_id, page_id, postback)
-            pprint(messaging_event)
-        return HttpResponse()
+    def post(self, request, format=None):
+        body = request.data.get('entry')
+        entry = body[0]
+        messaging_event = entry["messaging"][0]
+        sender_id = messaging_event['sender']['id']
+        page_id = messaging_event['recipient']['id']
+        message = messaging_event.get('message')
+        postback = messaging_event.get('postback')
+        send_typing_on(sender_id, page_id)
+        if message:
+            receive_message(sender_id, page_id, message)
+        elif postback:
+            receive_postback(sender_id, page_id, postback)
+        send_typing_off(sender_id, page_id)
+        return HttpResponse('Ok')
