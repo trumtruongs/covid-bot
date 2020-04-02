@@ -37,8 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'posts.apps.PostsConfig',
+    'welcome.apps.WelcomeConfig',
+    'webhooks.apps.WebhooksConfig',
+    'fanpage.apps.FanpageConfig',
+    'getstart_button.apps.GetstartButtonConfig',
+    
     'rest_framework',
-    'posts.apps.PostsConfig'
 ]
 
 MIDDLEWARE = [
@@ -133,6 +139,9 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
+
+PAGE_ACCESS_TOKEN = ''
+VERIFY_TOKEN = ''
 
 try:
     from covidbot.local_settings import *

@@ -1,15 +1,13 @@
 import requests
+from covidbot import settings
 from os import path
 from pprint import pprint
 from rest_framework.views import APIView
 from django.http.response import HttpResponse
 
-PAGE_ACCESS_TOKEN = "EAAMQEEFDTO8BAM5AtVG80pR6XuwGFYoYnXZAjg1iUTkZBNLZB0mMD6ETTU8pdKrJvelAXetqCHMTI92welTZC8CT4SehFDHJ0uxyaBgquvbZBtrFF8SjS1AGjyKO7ZBck8SSHkIWYNDGUQObOuh16aV1tOe1ZB1a4x8YcwqdHCeLGE1VTRWYHOejwqaQhiPC9EZD"
-VERIFY_TOKEN = "24031996"
-
 
 def call_send_api(fbid, page_id, message_data):
-    post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' % PAGE_ACCESS_TOKEN
+    post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' % settings.PAGE_ACCESS_TOKEN
     response_msg = {
         "recipient": {
             "id": fbid
@@ -20,14 +18,14 @@ def call_send_api(fbid, page_id, message_data):
 
 
 def call_delete_api(page_id, message_data):
-    post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' % PAGE_ACCESS_TOKEN
+    post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' % settings.PAGE_ACCESS_TOKEN
     status = requests.delete(post_message_url, headers={"Content-Type": "application/json"}, data=message_data)
     pprint(status.json())
 
 
 def get_user_profile(fbid):
     user_details_url = "https://graph.facebook.com/v2.6/%s" % fbid
-    user_details_params = {'fields': 'first_name,last_name,profile_pic', 'access_token': PAGE_ACCESS_TOKEN}
+    user_details_params = {'fields': 'first_name,last_name,profile_pic', 'access_token': settings.PAGE_ACCESS_TOKEN}
     return requests.get(user_details_url, user_details_params).json()
 
 
@@ -194,7 +192,7 @@ def receive_message(sender_id, page_id, message):
 
 def receive_postback(sender_id, page_id, postback):
     payload = postback['payload']
-    message_content = 'Received postback for user %d and page %d with payload %s.' % sender_id, page_id, payload
+    message_content = 'Received postback for user {} and page {} with payload {}.'.format(sender_id, page_id, payload)
     print(message_content)
     send_text_message(sender_id, page_id, "Postback called")
 
@@ -205,7 +203,7 @@ class CovidBotView(APIView):
         token = self.request.GET['hub.verify_token']
         challenge = self.request.GET['hub.challenge']
         if mode and token:
-            if token == VERIFY_TOKEN and mode == 'subscribe':
+            if token == settings.VERIFY_TOKEN and mode == 'subscribe':
                 return HttpResponse(challenge)
         return HttpResponse('Error, invalid token')
 
