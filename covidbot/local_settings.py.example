@@ -43,3 +43,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+PAGE_ACCESS_TOKEN = ''
+VERIFY_TOKEN = ''
+FB_ADMIN_UID = ''
