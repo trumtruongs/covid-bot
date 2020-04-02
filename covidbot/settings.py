@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'webhooks.apps.WebhooksConfig',
     'fanpage.apps.FanpageConfig',
     'getstart_button.apps.GetstartButtonConfig',
+    'patients.apps.PatientsConfig',
     
     'rest_framework',
 ]
