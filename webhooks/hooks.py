@@ -4,6 +4,7 @@ from os import path
 from pprint import pprint
 from rest_framework.views import APIView
 from django.http.response import HttpResponse
+from patients.models import Patient
 
 
 def call_send_api(fbid, page_id, message_data):
@@ -43,6 +44,20 @@ def send_typing_off(fbid, page_id):
     call_send_api(fbid, page_id, message_content)
 
 
+# quick_replies = [{
+#     "content_type": "text",
+#     "title": "Action",
+#     "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
+# }, {
+#     "content_type": "text",
+#     "title": "Comedy",
+#     "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
+# }, {
+#     "content_type": "text",
+#     "title": "Drama",
+#     "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
+# }]
+# send_quick_reply(sender_id, page_id, 'This is test message!', quick_replies)
 def send_quick_reply(fbid, page_id, text, quick_replies):
     message_content = {
         'message': {
@@ -153,6 +168,32 @@ def send_static_file(fbid, page_id, file_type, file_path):
     call_send_api(fbid, page_id, message_content)
 
 
+def get_patient(fbid, page_id, patient_index):
+    try:
+        patient_code = str(patient_index).zfill(4)
+        info = Patient.objects.get(code=patient_code)
+        response_message = 'Bệnh nhân số ' + patient_index + ':'
+        if not info.is_healthy:
+            if info.gender == 'male':
+                response_message += ' Nam,'
+            elif info.gender == 'female':
+                response_message += ' Nữ,'
+            if info.year_of_birth:
+                response_message += ' {} tuổi,'.format(2020-info.year_of_birth)
+            response_message += ' ' + info.detail
+        else:
+            response_message += ' đã khỏi bệnh.'
+        send_text_message(fbid, page_id, response_message)
+    except Patient.DoesNotExist:
+        send_text_message(fbid, page_id, "Mã số bệnh nhân không tồn tại!")
+
+
+def handle_finding(fbid, page_id, message_text):
+    signal = message_text[1:3]
+    if signal.lower() == 'bn':
+        get_patient(fbid, page_id, message_text[4:])
+
+
 def receive_message(sender_id, page_id, message):
     is_echo = message.get('is_echo')
     message_id = message.get('mid')
@@ -171,20 +212,8 @@ def receive_message(sender_id, page_id, message):
         return
     elif message_text:
         # TODO
-        quick_replies = [{
-            "content_type": "text",
-            "title": "Action",
-            "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
-        }, {
-            "content_type": "text",
-            "title": "Comedy",
-            "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
-        }, {
-            "content_type": "text",
-            "title": "Drama",
-            "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
-        }]
-        send_quick_reply(sender_id, page_id, 'This is test message!', quick_replies)
+        if message_text[0:1] == '@':
+            handle_finding(sender_id, page_id, message_text)
         return
     elif message_attachments:
         send_text_message(sender_id, page_id, 'Message with attachment received!')
@@ -194,7 +223,7 @@ def receive_postback(sender_id, page_id, postback):
     payload = postback['payload']
     message_content = 'Received postback for user {} and page {} with payload {}.'.format(sender_id, page_id, payload)
     print(message_content)
-    send_text_message(sender_id, page_id, "Postback called")
+    send_text_message(sender_id, page_id, "Postback called {}".format(payload))
 
 
 class CovidBotView(APIView):
