@@ -5,6 +5,7 @@ from pprint import pprint
 from rest_framework.views import APIView
 from django.http.response import HttpResponse
 from patients.models import Patient
+from subscribers.commons import add_subscriber
 
 
 def call_send_api(fbid, page_id, message_data):
@@ -223,6 +224,8 @@ def receive_postback(sender_id, page_id, postback):
     payload = postback['payload']
     message_content = 'Received postback for user {} and page {} with payload {}.'.format(sender_id, page_id, payload)
     print(message_content)
+    if payload == 'subscribe':
+        add_subscriber(sender_id, page_id)
     send_text_message(sender_id, page_id, "Postback called {}".format(payload))
 
 
