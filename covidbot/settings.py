@@ -42,10 +42,8 @@ INSTALLED_APPS = [
     'welcome.apps.WelcomeConfig',
     'webhooks.apps.WebhooksConfig',
     'fanpage.apps.FanpageConfig',
-    'getstart_button.apps.GetstartButtonConfig',
     'patients.apps.PatientsConfig',
-    'persistent_menu.apps.PersistentMenuConfig',
-    
+
     'rest_framework',
 ]
 
