@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'fanpage.apps.FanpageConfig',
     'getstart_button.apps.GetstartButtonConfig',
     'patients.apps.PatientsConfig',
+    'persistent_menu.apps.PersistentMenuConfig',
     
     'rest_framework',
 ]
