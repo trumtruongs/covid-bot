@@ -22,10 +22,8 @@ class CovidBotView(APIView):
         page_id = messaging_event['recipient']['id']
         message = messaging_event.get('message')
         postback = messaging_event.get('postback')
-        send.typing_on(sender_id, page_id)
         if message:
             receive.receive_message(sender_id, page_id, message)
         elif postback:
             receive.receive_postback(sender_id, page_id, postback)
-        send.typing_off(sender_id, page_id)
         return HttpResponse('Ok')
