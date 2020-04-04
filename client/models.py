@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from fanpage.models import Fanpage
 
 
 class Client(models.Model):
@@ -7,3 +8,7 @@ class Client(models.Model):
     email = models.EmailField(_('Email'), max_length=50)
     access_token = models.CharField(_('Access Token'), max_length=255, blank=False)
     expiresIn = models.DateTimeField(_('Expires In'))
+    pages = models.ManyToManyField(
+        Fanpage,
+        blank=True
+    )
