@@ -43,6 +43,9 @@ def fetch_new_statistics():
                     name = 'Nga {}'.format(flag.flag('RU'))
                 elif province_name == 'Japan':
                     name = 'Nhật Bản {}'.format(flag.flag('JP'))
+                elif province_name == 'UK':
+                    code = 'GB'
+                    name = 'Anh {}'.format(flag.flag('GB'))
 
                 print(code)
                 country, created = Country.objects.update_or_create(
