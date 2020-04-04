@@ -7,12 +7,12 @@ from covidbot.commons import flag_url
 
 
 def statistics_replies(sender_id, page_id):
-    countries = (('VN', 'Việt Nam'), ('US', 'Hoa Kỳ'), ('IT', 'Italia'), ('CN', 'Trung Quốc'),)
+    countries = (('TE', 'Thế Giới'), ('VN', 'Việt Nam'), ('US', 'Hoa Kỳ'), ('IT', 'Italia'), ('CN', 'Trung Quốc'),)
     quick_replies = [{
         'content_type': 'text',
         'title': country[1],
         'payload': 'STATISTICS {}'.format(country[0]),
-        'image_url': flag_url(country[0])
+        'image_url': flag_url(country[0]) if country[0] is not 'TE' else 'https://www.who.int/images/default-source/default-album/who-emblem-rgb.png'
     } for country in countries]
     quick_replies.append({
         'content_type': 'text',
@@ -37,14 +37,14 @@ def quick_reply_statistics(sender_id, page_id, payload):
         content = '''*{name}*
 ================
 Số ca nhiễm: {cases}
-Tử vong: {death}
 Đã bình phục: {recovered}
+Tử vong: {death}
 
 Hôm nay {today}:
 ================
 Số ca nhiễm: {cases_today}
-Tử vong: {death_today}
 Đã bình phục: {recovered_today}
+Tử vong: {death_today}
 
 ================
 Cập nhật lúc: {updated_at}
