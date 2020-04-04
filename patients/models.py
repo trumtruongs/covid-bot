@@ -16,3 +16,6 @@ class Patient(models.Model):
     year_of_birth = models.PositiveIntegerField(_('Year of birth'), blank=True, null=True)
     address = models.CharField(_('Address'), max_length=255, db_index=True, blank=True)
     detail = models.TextField(_('Detail'), blank=True)
+
+    def __str__(self):
+        return 'Bệnh nhân {}'.format(self.code)

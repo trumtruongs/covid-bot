@@ -11,3 +11,6 @@ class Subscriber(models.Model):
 
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '{} ({})'.format(self.display_name, self.recipient_id)

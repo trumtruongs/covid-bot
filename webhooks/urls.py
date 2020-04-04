@@ -1,5 +1,5 @@
 from django.urls import path
-from webhooks.hooks import CovidBotView
+from webhooks.views import CovidBotView
 
 urlpatterns = [
     path('', CovidBotView.as_view()),

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'fanpage.apps.FanpageConfig',
     'patients.apps.PatientsConfig',
     'subscribers.apps.SubscribersConfig',
+    'countries.apps.CountriesConfig',
 
     'rest_framework',
 ]

@@ -27,7 +27,9 @@ def getstart_button_model_post_save(sender, instance, **kwargs):
     views.set_field(
         page_id,
         'get_started',
-        welcome_configs.payload
+        {
+            'payload': welcome_configs.payload
+        }
     )
 
 

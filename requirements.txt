@@ -3,3 +3,4 @@ Django>=3.0.4
 djangorestframework
 psycopg2-binary
 requests
+texttable
