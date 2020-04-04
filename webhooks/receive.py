@@ -13,13 +13,13 @@ def receive_message(sender_id, page_id, message):
     message_attachments = message.get('attachments')
     quick_reply = message.get('quick_reply')
     if is_echo:
-        print('Received echo for message %s and app $d with metadata $s', message_id, app_id, metadata)
+        print('Received echo for message {} and app {} with metadata {}'.format(message_id, app_id, metadata))
     elif quick_reply:
         quick_reply_payload = quick_reply.get('payload')
         quick_replies.detect_quick_reply(sender_id, page_id, quick_reply_payload)
     elif message_text:
         # TODO
-        if message_text[0:1] == '@':
+        if message_text[:1] == '@':
             hooks.handle_finding(sender_id, page_id, message_text)
     elif message_attachments:
         send.text_message(sender_id, page_id, 'Message with attachment received!')
