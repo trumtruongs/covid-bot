@@ -7,3 +7,4 @@ from subscribers.models import Subscriber
 class SubscriberAdmin(admin.ModelAdmin):
     list_display = ('recipient_id', 'display_name', 'uid', 'page_id', 'created_at', 'updated_at')
     save_on_top = True
+    search_fields = ('recipient_id', 'display_name', 'page_id')

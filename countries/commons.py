@@ -40,22 +40,24 @@ def fetch_new_statistics():
                     name = 'Nga {}'.format(flag.flag('RU'))
                 elif c['province_name'] == 'Japan':
                     name = 'Nhật Bản {}'.format(flag.flag('JP'))
-
+                print(code)
                 country, created = Country.objects.update_or_create(
                     code=code,
                     defaults={'name': name, 'cases': cases, 'death': death, 'recovered': recovered}
                 )
                 # Check Vietnam increase
+                defaults = {'cases': cases_today, 'death': death_today, 'recovered': recovered_today}
+                history, created = History.objects.get_or_create(country=country, defaults=defaults)
+                old = {'cases': history.cases, 'death': history.death, 'recovered': history.recovered}
+                if not created:
+                    history.cases = cases_today
+                    history.death = death_today
+                    history.recovered = recovered_today
+                    history.save()
                 if code == 'VN':
-                    defaults = {'cases': cases, 'death': death, 'recovered': recovered}
-                    vn, created = History.objects.get_or_create(country=country, defaults=defaults)
-                    if vn.cases != cases or vn.death != death or vn.recovered != recovered:
-                        old = {'cases': vn.cases, 'death': vn.death, 'recovered': vn.recovered}
+                    if old['cases'] != defaults['cases'] or old['death'] != defaults['death'] or old['recovered'] != defaults['recovered']:
                         _thread.start_new_thread(send.notify_admin, (old, defaults))
-                        vn.cases = cases
-                        vn.death = death
-                        vn.recovered = recovered
-                        vn.save()
+
             except (LookupError, Exception):
                 pass
     except ValueError:

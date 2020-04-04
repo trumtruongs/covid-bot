@@ -1,3 +1,7 @@
+import pytz
+from django.utils import timezone
+
+from covidbot import settings
 from subscribers.models import Subscriber
 from webhooks import call_api
 from os import path
@@ -84,8 +88,9 @@ def static_file(fbid, page_id, file_type, file_path):
 
 
 def notify_admin(old, new):
+    now = timezone.now().replace(tzinfo=pytz.timezone(settings.TIME_ZONE))
     admins = Subscriber.objects.filter(is_admin=True)
     for admin in admins:
-        text_message(admin.recipient_id, admin.page_id, 'VN Có thông tin ca bệnh mới!')
+        text_message(admin.recipient_id, admin.page_id, 'VN Có thông tin ca bệnh mới! {}'.format(now.strftime('%H:%M %d/%m/%Y')))
         text_message(admin.recipient_id, admin.page_id, 'Cũ: {}/{}/{}'.format(old['cases'], old['death'], old['recovered']))
         text_message(admin.recipient_id, admin.page_id, 'Mới: {}/{}/{}'.format(new['cases'], new['death'], new['recovered']))

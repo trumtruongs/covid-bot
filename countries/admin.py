@@ -16,4 +16,6 @@ class HistoryAdmin(admin.ModelAdmin):
 class CountryAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'cases', 'death', 'recovered', 'created_at', 'updated_at')
     save_on_top = True
+    search_fields = ('name', 'code')
+
 
