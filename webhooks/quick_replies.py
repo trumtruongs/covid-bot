@@ -36,15 +36,15 @@ def quick_reply_statistics(sender_id, page_id, payload):
         code = payload[-2:]
         content = '''*{name}*
 ================
-Số ca nhiễm: {cases}
-Đã bình phục: {recovered}
-Tử vong: {death}
+Số ca nhiễm: {cases:,}
+Đã bình phục: {recovered:,}
+Tử vong: {death:,}
 
 Hôm nay {today}:
 ================
-Số ca nhiễm: {cases_today}
-Đã bình phục: {recovered_today}
-Tử vong: {death_today}
+Số ca nhiễm: {cases_today:,}
+Đã bình phục: {recovered_today:,}
+Tử vong: {death_today:,}
 
 ================
 Cập nhật lúc: {updated_at}
