@@ -1,3 +1,4 @@
+from subscribers.models import Subscriber
 from webhooks import call_api
 from os import path
 
@@ -80,3 +81,11 @@ def static_file(fbid, page_id, file_type, file_path):
         }
     }
     call_api.send(fbid, page_id, message_content)
+
+
+def notify_admin(old, new):
+    admins = Subscriber.objects.filter(is_admin=True)
+    for admin in admins:
+        text_message(admin.recipient_id, admin.page_id, 'VN Có thông tin ca bệnh mới!')
+        text_message(admin.recipient_id, admin.page_id, 'Cũ: {}/{}/{}'.format(old['cases'], old['death'], old['recovered']))
+        text_message(admin.recipient_id, admin.page_id, 'Mới: {}/{}/{}'.format(new['cases'], new['death'], new['recovered']))

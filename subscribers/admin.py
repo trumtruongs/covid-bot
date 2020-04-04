@@ -5,5 +5,5 @@ from subscribers.models import Subscriber
 
 @admin.register(Subscriber)
 class SubscriberAdmin(admin.ModelAdmin):
-    list_display = ('display_name', 'recipient_id', 'uid', 'page_id', 'created_at', 'updated_at')
+    list_display = ('recipient_id', 'display_name', 'uid', 'page_id', 'created_at', 'updated_at')
     save_on_top = True

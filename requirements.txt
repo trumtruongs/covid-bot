@@ -4,3 +4,5 @@ djangorestframework
 psycopg2-binary
 requests
 texttable
+pycountry
+emoji-country-flag
