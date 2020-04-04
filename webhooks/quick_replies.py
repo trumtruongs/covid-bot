@@ -1,5 +1,5 @@
 from django.utils import timezone
-
+import pytz
 from countries.models import Country, History
 from covidbot import settings
 from webhooks import send
@@ -65,11 +65,11 @@ Cập nhật lúc: {updated_at}
                                      cases=country.cases,
                                      death=country.death,
                                      recovered=country.recovered,
-                                     today=country.updated_at.timetz().strftime('%d/%m/%Y'),
+                                     today=timezone.localtime(country.updated_at, pytz.timezone(settings.TIME_ZONE)).strftime('%d/%m/%Y'),
                                      cases_today=cases_today,
                                      death_today=death_today,
                                      recovered_today=recovered_today,
-                                     updated_at=country.updated_at.strftime('%H:%M %d/%m/%Y')
+                                     updated_at=timezone.localtime(country.updated_at, pytz.timezone(settings.TIME_ZONE)).strftime('%H:%M %d/%m/%Y')
                                      )
             send.text_message(sender_id, page_id, content)
 
