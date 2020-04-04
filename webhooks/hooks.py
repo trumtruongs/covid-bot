@@ -1,5 +1,6 @@
 from patients.models import Patient
 from webhooks import send
+from webhooks.quick_replies import quick_reply_statistics
 
 
 def get_patient(fbid, page_id, patient_index):
@@ -23,6 +24,8 @@ def get_patient(fbid, page_id, patient_index):
 
 
 def handle_finding(fbid, page_id, message_text):
-    signal = message_text[1:3]
-    if signal.lower() == 'bn':
+    signal = message_text[:3]
+    if signal.lower() == '@bn':
         get_patient(fbid, page_id, message_text[4:])
+    elif signal.lower() == '@tk':
+        quick_reply_statistics(fbid, page_id, message_text.upper())
