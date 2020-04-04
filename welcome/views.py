@@ -13,7 +13,9 @@ def call_send_api(page_id, message_data, is_delete=False):
 
 def set_field(page_id, field, payload):
     message_data = {
-        field: payload
+        field: {
+            'payload': payload
+        }
     }
     call_send_api(page_id, message_data)
 
