@@ -65,7 +65,7 @@ Cập nhật lúc: {updated_at}
                                      cases=country.cases,
                                      death=country.death,
                                      recovered=country.recovered,
-                                     today=timezone.localtime(country.updated_at, pytz.timezone(settings.TIME_ZONE)).strftime('%d/%m/%Y'),
+                                     today=country.updated_at.strftime('%d/%m/%Y'),
                                      cases_today=cases_today,
                                      death_today=death_today,
                                      recovered_today=recovered_today,
