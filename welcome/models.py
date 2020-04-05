@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from fanpage.models import Fanpage
 
 LOCALES = (
     ('default', 'Default'),
@@ -11,15 +12,21 @@ LOCALES = (
 class GreetingMessage(models.Model):
     locale = models.CharField(_('Locale'), max_length=50, choices=LOCALES, db_index=True)
     text = models.CharField(_('Greeting message'), max_length=160)
-    page_id = models.CharField(_('Page ID'), max_length=20, db_index=True)
+    fanpage = models.ForeignKey(to=Fanpage, related_name='+', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.fanpage.name
 
     class Meta:
-        unique_together = (('locale', 'page_id'),)
+        unique_together = (('locale', 'fanpage'),)
 
 
 class GetStartedButton(models.Model):
     payload = models.CharField(_('Get Started Payload'), max_length=512)
-    page_id = models.CharField(_('Page ID'), max_length=20, db_index=True, unique=True)
+    fanpage = models.ForeignKey(to=Fanpage, related_name='+', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.fanpage.name
 
 
 class PersistentMenu(models.Model):
@@ -45,7 +52,10 @@ class PersistentMenu(models.Model):
                   "</br>}]"
     )
     locale = models.CharField(_('Locale'), max_length=50, choices=LOCALES, db_index=True, default='default')
-    page_id = models.CharField(_('Page ID'), max_length=20, db_index=True, unique=True)
+    fanpage = models.ForeignKey(to=Fanpage, related_name='+', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.fanpage.name
 
     class Meta:
-        unique_together = (('locale', 'page_id'),)
+        unique_together = (('locale', 'fanpage'),)
