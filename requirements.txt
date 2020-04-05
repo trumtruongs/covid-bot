@@ -6,3 +6,4 @@ requests
 texttable
 pycountry
 emoji-country-flag
+redis
