@@ -19,7 +19,7 @@ def statistics_replies(sender_id, page_id):
         'title': 'Khác',
         'payload': 'STATISTICS MORE'
     })
-    text = 'ABC'
+    text = '_Chọn nhanh các lựa chọn bên dưới, hoặc nhắn tin với cú pháp @TK [Mã Quốc Gia] để xem thông kê ca bệnh_'
     send.quick_reply(sender_id, page_id, text, quick_replies)
 
 
