@@ -4,6 +4,9 @@ DEBUG = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
+USE_TZ = True
+
 SITE_DOMAIN = 'covid.mebuka.net'
 
 DATABASES = {
@@ -28,12 +31,12 @@ CORS_ORIGIN_WHITELIST = (
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 
-STATIC_DOMAIN = 'http://%s' % SITE_DOMAIN
+STATIC_DOMAIN = 'https://%s' % SITE_DOMAIN
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-MEDIA_DOMAIN = 'http://%s' % SITE_DOMAIN
+MEDIA_DOMAIN = 'https://%s' % SITE_DOMAIN
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -44,3 +47,6 @@ STATICFILES_FINDERS = (
 
 PAGE_ACCESS_TOKEN = ''
 VERIFY_TOKEN = ''
+
+REDIS_HOST = 'redis'
+REDIS_PORT = 6379

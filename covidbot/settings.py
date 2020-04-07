@@ -146,6 +146,11 @@ STATICFILES_FINDERS = (
 PAGE_ACCESS_TOKEN = ''
 VERIFY_TOKEN = ''
 
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+
+
 try:
     from covidbot.local_settings import *
 except ImportError:
