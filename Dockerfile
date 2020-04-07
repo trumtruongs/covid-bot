@@ -1,7 +1,11 @@
-FROM python:3
+FROM python:3.7-alpine
+
 ENV PYTHONUNBUFFERED 1
+
 RUN mkdir /code
 WORKDIR /code
-COPY requirements.txt /code/
+
+COPY . /code
 RUN pip install -r requirements.txt
-COPY . /code/
+
+CMD ['gunicorn', 'covidbot.wsgi']

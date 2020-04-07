@@ -4,15 +4,14 @@ DEBUG = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SITE_DOMAIN = 'yup.mebuka.net'
+SITE_DOMAIN = 'covid.mebuka.net'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db_name',
-        'USER': 'db_user',
-        'PASSWORD': 'db_pass',
-        'HOST': '127.0.0.1',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -45,4 +44,3 @@ STATICFILES_FINDERS = (
 
 PAGE_ACCESS_TOKEN = ''
 VERIFY_TOKEN = ''
-FB_ADMIN_UID = ''
