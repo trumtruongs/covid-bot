@@ -1,14 +1,8 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from posts import models
 from subscribers.models import Subscriber
 from webhooks import send
-from covidbot import settings
-
-
-@receiver(pre_save, sender=models.Post)
-def post_model_pre_save(sender, instance, **kwargs):
-    pass
 
 
 @receiver(post_save, sender=models.Post)
@@ -32,7 +26,7 @@ def post_model_post_save(sender, instance, created, **kwargs):
                 'default_action': {
                     'type': 'web_url',
                     'url': instance.link,
-                    'messenger_extensions': True
+                    'webview_height_ratio': 'full',
                 }
             }])
 
