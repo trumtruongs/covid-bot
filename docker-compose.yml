@@ -3,7 +3,7 @@ version: '3'
 services:
   covid-bot:
     build: .
-    restart: always
+    restart: unless-stopped
     volumes:
       - .:/code
     ports:
@@ -13,12 +13,16 @@ services:
       - redis
   db:
     image: postgres
-    restart: always
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     volumes:
       - db-data:/var/lib/postgresql/data
 
   redis:
     image: redis:alpine
+    restart: unless-stopped
 
 volumes:
   db-data:
