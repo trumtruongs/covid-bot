@@ -6,17 +6,17 @@ from welcome.models import GreetingMessage, GetStartedButton, PersistentMenu
 
 @admin.register(GreetingMessage)
 class WelcomeAdmin(admin.ModelAdmin):
-    list_display = ('page_id', 'locale', 'text',)
+    list_display = ('fanpage', 'locale', 'text',)
     save_on_top = True
 
 
 @admin.register(GetStartedButton)
 class GetStartedButtonAdmin(admin.ModelAdmin):
-    list_display = ('page_id', 'payload')
+    list_display = ('fanpage', 'payload')
     save_on_top = True
 
 
 @admin.register(PersistentMenu)
 class PersistentMenuAdmin(admin.ModelAdmin):
-    list_display = ('page_id', 'locale', 'call_to_actions')
+    list_display = ('fanpage', 'locale', 'call_to_actions')
     save_on_top = True

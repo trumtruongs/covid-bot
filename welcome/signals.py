@@ -5,8 +5,7 @@ from welcome import models, views
 
 @receiver(post_save, sender=models.GreetingMessage)
 def welcome_model_post_save(sender, instance, **kwargs):
-    page_id = instance.page_id
-    welcome_configs = sender.objects.filter(page_id=page_id,)
+    welcome_configs = sender.objects.filter(fanpage=instance.fanpage,)
     filtered_data = []
     for i in welcome_configs:
         filtered_data.append({
@@ -16,16 +15,17 @@ def welcome_model_post_save(sender, instance, **kwargs):
     response_message = {
         'greeting': filtered_data,
     }
-    views.call_send_api(page_id, response_message)
+    views.call_send_api(
+        instance.fanpage.id,
+        response_message
+    )
 
 
 @receiver(post_save, sender=models.GetStartedButton)
 def getstart_button_model_post_save(sender, instance, **kwargs):
-    page_id = instance.page_id
-    welcome_configs = sender.objects.get(page_id=page_id,)
-    print(welcome_configs.payload)
+    welcome_configs = sender.objects.get(fanpage=instance.fanpage,)
     views.set_field(
-        page_id,
+        instance.fanpage.id,
         'get_started',
         {
             'payload': welcome_configs.payload
@@ -35,8 +35,7 @@ def getstart_button_model_post_save(sender, instance, **kwargs):
 
 @receiver(post_save, sender=models.PersistentMenu)
 def persistent_menu_model_post_save(sender, instance, **kwargs):
-    page_id = instance.page_id
-    persistent_menu_configs = sender.objects.filter(page_id=page_id, )
+    persistent_menu_configs = sender.objects.filter(fanpage=instance.fanpage, )
     payload = []
     for config in persistent_menu_configs:
         payload.append({
@@ -45,7 +44,7 @@ def persistent_menu_model_post_save(sender, instance, **kwargs):
             'call_to_actions': config.call_to_actions
         })
     views.set_field(
-        page_id,
+        instance.fanpage.id,
         'persistent_menu',
         payload=payload
     )
