@@ -46,6 +46,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+ALLOWED_HOSTS = ['*']
+
 PAGE_ACCESS_TOKEN = ''
 VERIFY_TOKEN = ''
 
