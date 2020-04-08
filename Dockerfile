@@ -10,4 +10,4 @@ WORKDIR /code
 COPY . /code
 RUN pip install -r requirements.txt
 
-CMD ["gunicorn", "covidbot.wsgi"]
+CMD ["gunicorn", "covidbot.wsgi", "-b", "0.0.0.0:8000"]
