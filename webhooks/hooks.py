@@ -5,7 +5,7 @@ from webhooks.quick_replies import quick_reply_statistics
 
 def get_patient(fbid, page_id, patient_index):
     try:
-        patient_code = str(patient_index).zfill(4)
+        patient_code = str(patient_index)
         info = Patient.objects.get(code=patient_code)
         response_message = 'Bệnh nhân ' + patient_index + ':'
         if not info.is_healthy:
