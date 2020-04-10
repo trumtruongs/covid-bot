@@ -29,7 +29,9 @@ def receive_postback(sender_id, page_id, postback):
     payload = postback['payload']
     message_content = 'Received postback for user {} and page {} with payload {}.'.format(sender_id, page_id, payload)
     print(message_content)
-    if payload == 'subscribe':
+    if payload == 'SUBSCRIBE':
         commons.add_subscriber(sender_id, page_id)
     elif payload == 'STATISTICS':
         quick_replies.statistics_replies(sender_id, page_id)
+    elif payload == 'HELP_PATIENT':
+        commons.help_find_patient(sender_id, page_id)
