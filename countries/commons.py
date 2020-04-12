@@ -35,8 +35,10 @@ def fetch_new_statistics():
 
                 if province_name == 'Vietnam':
                     name = 'Việt Nam {}'.format(flag.flag('VN'))
+                elif province_name == 'Portugal':
+                    name = 'Tây Ban Nha {}'.format(flag.flag(code))
                 elif province_name == 'USA':
-                    name = 'Mỹ {}'.format(flag.flag('US'))
+                    name = 'Hoa Kỳ {}'.format(flag.flag('US'))
                 elif province_name == 'China':
                     name = 'Trung Quốc {}'.format(flag.flag('CN'))
                 elif province_name == 'Russia':
