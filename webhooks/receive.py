@@ -18,7 +18,6 @@ def receive_message(sender_id, page_id, message):
         quick_reply_payload = quick_reply.get('payload')
         quick_replies.detect_quick_reply(sender_id, page_id, quick_reply_payload)
     elif message_text:
-        # TODO
         if message_text[:1] == '@':
             hooks.handle_finding(sender_id, page_id, message_text)
     elif message_attachments:
@@ -30,6 +29,8 @@ def receive_postback(sender_id, page_id, postback):
     message_content = 'Received postback for user {} and page {} with payload {}.'.format(sender_id, page_id, payload)
     print(message_content)
     if payload == 'SUBSCRIBE':
+        send.text_message(sender_id, page_id,
+                          'Chào bạn, tụi mình là Chatbot cập nhập tin tức về Covid-19. Hãy yên tâm, các bạn luôn an toàn vì đã có tụi mình cập nhật tin tức “Cô Vy” từng phút từng giây! Muốn biết thêm chi tiết thì hãy bấm vào Menu nhé!')
         commons.add_subscriber(sender_id, page_id)
     elif payload == 'STATISTICS':
         quick_replies.statistics_replies(sender_id, page_id)
