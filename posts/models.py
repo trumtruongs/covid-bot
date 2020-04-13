@@ -9,7 +9,7 @@ POST_TYPES = (
 
 
 class Post(models.Model):
-    message = models.CharField(_('Message'), max_length=255, blank=True)
+    message = models.TextField(_('Message'), blank=True)
     content = models.TextField(_('Content'), blank=True)
     numline = models.IntegerField(_('Content numline'), default=3)
     thumbnail = models.CharField(_('Link thumbnail'), max_length=500, blank=True)

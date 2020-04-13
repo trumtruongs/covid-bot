@@ -1,5 +1,8 @@
 import requests
 import json
+
+from django.utils import timezone
+
 from countries.models import Country, History
 import pycountry
 import flag
@@ -62,6 +65,7 @@ def fetch_new_statistics():
                     history.cases = cases_today
                     history.death = death_today
                     history.recovered = recovered_today
+                    history.date = timezone.now()
                     history.save()
                 if code == 'VN':
                     if old['cases'] != defaults['cases'] or old['death'] != defaults['death'] or old['recovered'] != defaults['recovered']:
