@@ -62,6 +62,10 @@ def button_message(fbid, page_id, buttons, text_message):
     call_api.send(fbid, page_id, message_content)
 
 
+def request_follow_message(fb):
+    pass
+
+
 def text_message(fbid, page_id, text_message):
     message_data = {
         'message': {

@@ -5,7 +5,7 @@ from webhooks.quick_replies import quick_reply_statistics
 
 def get_patient(fbid, page_id, patient_index):
     try:
-        patient_code = str(patient_index)
+        patient_code = str(patient_index).strip()
         info = Patient.objects.get(code=patient_code)
         response_message = 'Bệnh nhân ' + patient_index + ':'
         if not info.is_healthy:
@@ -26,6 +26,6 @@ def get_patient(fbid, page_id, patient_index):
 def handle_finding(fbid, page_id, message_text):
     signal = message_text[:3]
     if signal.lower() == '@bn':
-        get_patient(fbid, page_id, message_text[4:])
+        get_patient(fbid, page_id, message_text[3:])
     elif signal.lower() == '@tk':
         quick_reply_statistics(fbid, page_id, message_text.upper())
