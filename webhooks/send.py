@@ -44,6 +44,7 @@ def generic_message(fbid, page_id, elements):
         }
     }
     call_api.send(fbid, page_id, message_content)
+    return True
 
 
 def button_message(fbid, page_id, buttons, text_message):
@@ -74,6 +75,7 @@ def text_message(fbid, page_id, text_message):
         }
     }
     call_api.send(fbid, page_id, message_data)
+    return True
 
 
 def static_file(fbid, page_id, file_type, file_path):
