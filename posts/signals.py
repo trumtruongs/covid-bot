@@ -16,9 +16,8 @@ def post_model_post_save(sender, instance, created, **kwargs):
     for subscriber in subscribers:
         if instance.type == 'TEXT':
             send.text_message(subscriber.recipient_id, subscriber.page_id, instance.message)
-        elif instance.type == 'UPDATE':
-            pass
         elif instance.type == 'SHARE':
+            send.text_message(subscriber.recipient_id, subscriber.page_id, instance.message)
             send.generic_message(subscriber.recipient_id, subscriber.page_id, elements=[{
                 'title': instance.title,
                 'image_url': instance.thumbnail,

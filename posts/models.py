@@ -3,15 +3,12 @@ from django.utils.translation import gettext_lazy as _
 
 POST_TYPES = (
     ('TEXT', 'Nội dung'),
-    ('UPDATE', 'Cập nhật số lượng ca VN'),
-    ('SHARE', 'Chia sẻ Liên kết'),
+    ('SHARE', 'Chia sẻ Thông tin'),
 )
 
 
 class Post(models.Model):
     message = models.TextField(_('Message'), blank=True)
-    content = models.TextField(_('Content'), blank=True)
-    numline = models.IntegerField(_('Content numline'), default=3)
     thumbnail = models.CharField(_('Link thumbnail'), max_length=500, blank=True)
     title = models.CharField(_('Post Title'), max_length=255, blank=True)
     sapo = models.CharField(_('Post sapo'), max_length=500, blank=True)
