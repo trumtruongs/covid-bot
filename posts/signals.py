@@ -14,10 +14,11 @@ def post_model_post_save(sender, instance, created, **kwargs):
         subscribers = Subscriber.objects.all()
 
     for subscriber in subscribers:
+        token = subscriber.one_time_token
         if instance.type == 'TEXT':
-            send.text_message(subscriber.recipient_id, subscriber.page_id, instance.message)
+            send.text_message(subscriber.recipient_id, subscriber.page_id, instance.message, token)
         elif instance.type == 'SHARE':
-            send.text_message(subscriber.recipient_id, subscriber.page_id, instance.message)
+            send.text_message(subscriber.recipient_id, subscriber.page_id, instance.message, token)
             send.generic_message(subscriber.recipient_id, subscriber.page_id, elements=[{
                 'title': instance.title,
                 'image_url': instance.thumbnail,
@@ -27,5 +28,5 @@ def post_model_post_save(sender, instance, created, **kwargs):
                     'url': instance.link,
                     'webview_height_ratio': 'full',
                 }
-            }])
+            }], one_time_token=token)
 
