@@ -33,6 +33,8 @@ def receive_postback(sender_id, page_id, postback):
     print(message_content)
     if payload == 'SUBSCRIBE':
         send.subscribe(sender_id, page_id)
+    elif payload == 'CONTINUE_SUBSCRIBE':
+        send.text_message(sender_id, page_id, 'Cảm ơn bạn! Chúng mình sẽ thông báo cho bạn ngay khi có tin tức mới nhé!')
     elif payload == 'STATISTICS':
         quick_replies.statistics_replies(sender_id, page_id)
     elif payload == 'HELP_PATIENT':

@@ -99,15 +99,27 @@ def broadcast_in_signals(instance):
                     'type': 'web_url',
                     'url': instance.link,
                     'webview_height_ratio': 'full',
-                }
+                },
+                'buttons': [
+                    {
+                        'type': 'web_url',
+                        'url': instance.link,
+                        'title': 'Xem chi tiết tin này'
+                    },
+                    {
+                        "type": "postback",
+                        "title": "Tiếp tục nhận tin mới",
+                        "payload": "CONTINUE_SUBSCRIBE"
+                    }
+                ]
             }]
             generic_message(subscriber.recipient_id, subscriber.page_id, elements)
 
 
-def text_message(fbid, page_id, text_message, one_time_token=None):
+def text_message(fbid, page_id, message, one_time_token=None):
     message_data = {
         'message': {
-            "text": text_message,
+            "text": message,
             "metadata": "DEVELOPER_DEFINED_METADATA"
         }
     }
@@ -143,4 +155,4 @@ def subscribe(sender_id, page_id):
     text_message(sender_id, page_id,
                       'Chào bạn, tụi mình là Chatbot cập nhập tin tức về Covid-19. Hãy yên tâm, các bạn luôn an toàn vì đã có tụi mình cập nhật tin tức “Cô Vy” từng phút từng giây! Muốn biết thêm chi tiết thì hãy bấm vào Menu nhé!')
     commons.add_subscriber(sender_id, page_id)
-    request_follow_message(sender_id, page_id)
+    # request_follow_message(sender_id, page_id)
