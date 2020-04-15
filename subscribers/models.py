@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 class Subscriber(models.Model):
     display_name = models.CharField(_('Display name'), max_length=255, blank=True)
     recipient_id = models.CharField(_('Recipient ID'), max_length=50, db_index=True)
+    one_time_token = models.CharField(_('One time TOKEN'), max_length=255, db_index=True, blank=True)
     message_id = models.CharField(_('Message ID'), max_length=255, db_index=True, blank=True)
     page_id = models.CharField(_('Page ID'), max_length=50, db_index=True)
     uid = models.CharField(_('Facebook UID'), max_length=50, db_index=True, blank=True)

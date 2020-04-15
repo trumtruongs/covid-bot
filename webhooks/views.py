@@ -20,10 +20,13 @@ class CovidBotView(APIView):
         messaging_event = entry["messaging"][0]
         sender_id = messaging_event['sender']['id']
         page_id = messaging_event['recipient']['id']
+        optin = messaging_event.get('optin')
         message = messaging_event.get('message')
         postback = messaging_event.get('postback')
         if message:
             receive.receive_message(sender_id, page_id, message)
         elif postback:
             receive.receive_postback(sender_id, page_id, postback)
+        elif optin:
+            receive.receive_optin(sender_id, page_id, optin)
         return HttpResponse('Ok')

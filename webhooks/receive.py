@@ -20,6 +20,9 @@ def receive_message(sender_id, page_id, message):
     elif message_text:
         if message_text[:1] == '@':
             hooks.handle_finding(sender_id, page_id, message_text)
+        elif message_text.strip().lower() in ['theo dõi', 'bắt đầu']:
+            send.subscribe(sender_id, page_id)
+
     elif message_attachments:
         send.text_message(sender_id, page_id, 'Message with attachment received!')
 
@@ -29,10 +32,15 @@ def receive_postback(sender_id, page_id, postback):
     message_content = 'Received postback for user {} and page {} with payload {}.'.format(sender_id, page_id, payload)
     print(message_content)
     if payload == 'SUBSCRIBE':
-        send.text_message(sender_id, page_id,
-                          'Chào bạn, tụi mình là Chatbot cập nhập tin tức về Covid-19. Hãy yên tâm, các bạn luôn an toàn vì đã có tụi mình cập nhật tin tức “Cô Vy” từng phút từng giây! Muốn biết thêm chi tiết thì hãy bấm vào Menu nhé!')
-        commons.add_subscriber(sender_id, page_id)
+        send.subscribe(sender_id, page_id)
     elif payload == 'STATISTICS':
         quick_replies.statistics_replies(sender_id, page_id)
     elif payload == 'HELP_PATIENT':
         commons.help_find_patient(sender_id, page_id)
+
+
+def receive_optin(sender_id, page_id, optin):
+    t = optin.get('type')
+    if t == 'one_time_notif_req':
+        token = optin.get('one_time_notif_token')
+        commons.update_token_subscriber(sender_id, page_id, token)

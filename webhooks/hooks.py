@@ -7,7 +7,7 @@ def get_patient(fbid, page_id, patient_index):
     try:
         patient_code = str(patient_index).strip()
         info = Patient.objects.get(code=patient_code)
-        response_message = 'Bệnh nhân ' + patient_index + ':'
+        response_message = 'Bệnh nhân ' + patient_code + ':'
         if not info.is_healthy:
             if info.gender == 'male':
                 response_message += ' Nam,'

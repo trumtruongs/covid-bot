@@ -2,12 +2,16 @@ import requests
 from covidbot import settings
 
 
-def send(fbid, page_id, message_data):
+def send(fbid, page_id, message_data, token=None):
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' % settings.PAGE_ACCESS_TOKEN
+    tk = 'one_time_notif_token' if token else 'id'
+    value = token if token else fbid
+    recipient = {
+        tk: value,
+    }
+    print(recipient)
     response_msg = {
-        "recipient": {
-            "id": fbid
-        },
+        'recipient': recipient,
         **message_data
     }
     re = requests.post(post_message_url, json=response_msg)
