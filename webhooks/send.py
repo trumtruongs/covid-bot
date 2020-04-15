@@ -63,6 +63,31 @@ def button_message(fbid, page_id, buttons, text_message):
     call_api.send(fbid, page_id, message_content)
 
 
+def broadcast_in_signals(instance):
+    subscribers = []
+    if instance.pushAdmin:
+        subscribers = Subscriber.objects.filter(is_admin=True)
+    if instance.publish:
+        subscribers = Subscriber.objects.all()
+
+    for subscriber in subscribers:
+        if instance.type == 'TEXT':
+            text_message(subscriber.recipient_id, subscriber.page_id, instance.message)
+        elif instance.type == 'SHARE':
+            text_message(subscriber.recipient_id, subscriber.page_id, instance.message)
+            elements = [{
+                'title': instance.title,
+                'image_url': instance.thumbnail,
+                'subtitle': instance.sapo,
+                'default_action': {
+                    'type': 'web_url',
+                    'url': instance.link,
+                    'webview_height_ratio': 'full',
+                }
+            }]
+            generic_message(subscriber.recipient_id, subscriber.page_id, elements)
+
+
 def request_follow_message(fb):
     pass
 
