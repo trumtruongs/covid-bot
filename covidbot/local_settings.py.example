@@ -4,15 +4,18 @@ DEBUG = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SITE_DOMAIN = 'yup.mebuka.net'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
+USE_TZ = True
+
+SITE_DOMAIN = 'covid.mebuka.net'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db_name',
-        'USER': 'db_user',
-        'PASSWORD': 'db_pass',
-        'HOST': '127.0.0.1',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -29,12 +32,12 @@ CORS_ORIGIN_WHITELIST = (
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 
-STATIC_DOMAIN = 'http://%s' % SITE_DOMAIN
+STATIC_DOMAIN = 'https://%s' % SITE_DOMAIN
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-MEDIA_DOMAIN = 'http://%s' % SITE_DOMAIN
+MEDIA_DOMAIN = 'https://%s' % SITE_DOMAIN
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -43,3 +46,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+ALLOWED_HOSTS = ['*']
+
+PAGE_ACCESS_TOKEN = ''
+VERIFY_TOKEN = ''
+
+REDIS_HOST = 'redis'
+REDIS_PORT = 6379

@@ -37,8 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'client.apps.ClientConfig',
+    'posts.apps.PostsConfig',
+    'welcome.apps.WelcomeConfig',
+    'webhooks.apps.WebhooksConfig',
+    'fanpage.apps.FanpageConfig',
+    'patients.apps.PatientsConfig',
+    'subscribers.apps.SubscribersConfig',
+    'countries.apps.CountriesConfig',
+
     'rest_framework',
-    'posts.apps.PostsConfig'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +65,7 @@ ROOT_URLCONF = 'covidbot.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,6 +142,14 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
+
+PAGE_ACCESS_TOKEN = ''
+VERIFY_TOKEN = ''
+
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+
 
 try:
     from covidbot.local_settings import *

@@ -1,5 +1,10 @@
-Django>=3.0.4
+Django>=3.0.5
 
 djangorestframework
-psycopg2-binary
+psycopg2>=2.7,<3.0
 requests
+texttable
+pycountry
+emoji-country-flag
+redis
+gunicorn

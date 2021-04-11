@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from covidbot import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hooks/', include('webhooks.urls'))
+    path('hooks/', include('webhooks.urls')),
+    path('visualization', views.visualization)
 ]
